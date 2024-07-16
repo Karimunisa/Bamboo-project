@@ -9,7 +9,7 @@ provider "aws" {
 data "archive_file" "lambda_zip" {
   type        = "zip"
   source_file = "lambda_handler.py"
-  output_path = "lambda_function.zip"
+  output_path = "lambda_handler.zip"
 }
 
 resource "aws_lambda_function" "test_lambda" {
@@ -47,7 +47,15 @@ resource "aws_iam_policy" "iam_policy_for_lambda" {
     Statement = [
       {
         Action   = [
-          "*"
+          "logs:CreateLogGroup",
+          "logs:CreateLogStream",
+          "logs:PutLogEvents",
+          "iam:CreateRole",
+          "iam:AttachRolePolicy",
+          "iam:CreatePolicy",
+          "lambda:CreateFunction",
+          "lambda:UpdateFunctionCode",
+          "lambda:InvokeFunction"
         ]
         Resource = "*"
         Effect   = "Allow"
