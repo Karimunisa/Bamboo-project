@@ -3,14 +3,8 @@
 # to test: run `terraform plan`
 # to deploy: run `terraform apply`
 provider "aws" {
-  region                   = "us-east-2"
-  access_key = "AKIATCKAQKWIF2RXYRES"
-  secret_key="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"
+  region                   = "us-east-1"
   
-}
-
-provider "aws" {
-  region          = "${var.aws_region}"
 }
 
 data "archive_file" "lambda_zip" {
