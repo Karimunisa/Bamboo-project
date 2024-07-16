@@ -47,15 +47,7 @@ resource "aws_iam_policy" "iam_policy_for_lambda" {
     Statement = [
       {
         Action   = [
-          "logs:CreateLogGroup",
-          "logs:CreateLogStream",
-          "logs:PutLogEvents",
-          "iam:CreateRole",
-          "iam:AttachRolePolicy",
-          "iam:CreatePolicy",
-          "lambda:CreateFunction",
-          "lambda:UpdateFunctionCode",
-          "lambda:InvokeFunction"
+          "*"
         ]
         Resource = "*"
         Effect   = "Allow"
