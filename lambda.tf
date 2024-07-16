@@ -2,9 +2,11 @@
 # requires 'index.js' in the same directory
 # to test: run `terraform plan`
 # to deploy: run `terraform apply`
-
-variable "aws_region" {
-  default = "us-west-2"
+provider "aws" {
+  region                   = "us-east-2"
+  access_key = "AKIATCKAQKWIF2RXYRES"
+  secret_key="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"
+  
 }
 
 provider "aws" {
@@ -13,7 +15,7 @@ provider "aws" {
 
 data "archive_file" "lambda_zip" {
     type          = "zip"
-    source_file   = "index.js"
+    source_file   = "lambda_handler.py"
     output_path   = "lambda_function.zip"
 }
 
@@ -21,9 +23,9 @@ resource "aws_lambda_function" "test_lambda" {
   filename         = "lambda_function.zip"
   function_name    = "test_lambda"
   role             = "${aws_iam_role.iam_for_lambda_tf.arn}"
-  handler          = "index.handler"
+  handler          = "lambda_handler.handler"
   source_code_hash = "${data.archive_file.lambda_zip.output_base64sha256}"
-  runtime          = "nodejs6.10"
+  runtime          = "python3.10"
 }
 
 resource "aws_iam_role" "iam_for_lambda_tf" {
@@ -44,4 +46,46 @@ resource "aws_iam_role" "iam_for_lambda_tf" {
   ]
 }
 EOF
+}
+
+resource "aws_iam_policy" "iam_policy_for_lambda" {
+
+  name         = "aws_iam_policy_for_terraform_aws_lambda_role"
+  path         = "/"
+  description  = "AWS IAM Policy for managing aws lambda role"
+  policy = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Action": [
+        "logs:CreateLogGroup",
+        "logs:CreateLogStream",
+        "logs:PutLogEvents"
+      ],
+      "Resource": "arn:aws:logs:*:*:*",
+      "Effect": "Allow"
+    }
+  ]
+}
+EOF
+}
+
+# Policy Attachment on the role.
+
+resource "aws_iam_role_policy_attachment" "attach_iam_policy_to_iam_role" {
+  role        = aws_iam_role.iam_for_lambda_tf.name
+  policy_arn  = aws_iam_policy.iam_policy_for_lambda.arn
+}
+
+output "teraform_aws_role_output" {
+ value = aws_iam_role.iam_for_lambda_tf.name
+}
+
+output "teraform_aws_role_arn_output" {
+ value = aws_iam_role.iam_for_lambda_tf.arn
+}
+
+output "teraform_logging_arn_output" {
+ value = aws_iam_policy.iam_policy_for_lambda.arn
 }
