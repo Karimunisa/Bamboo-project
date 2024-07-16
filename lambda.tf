@@ -8,8 +8,8 @@ provider "aws" {
 
 data "archive_file" "lambda_zip" {
   type        = "zip"
-  source_file = "./test_lambda"
-  output_path = "./test_lambda.zip"
+  source_file = "./lambda_function.py"
+  output_path = "./lambda_function.py"
 }
 
 resource "aws_lambda_function" "test_lambda" {
