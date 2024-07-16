@@ -52,7 +52,8 @@ resource "aws_iam_policy" "iam_policy_for_lambda" {
           "logs:PutLogEvents",
           "iam:CreateRole",
           "iam:AttachRolePolicy",
-          "iam:CreatePolicy"
+          "iam:CreatePolicy",
+          "lambda:*
         ]
         Resource = "*"
         Effect   = "Allow"
