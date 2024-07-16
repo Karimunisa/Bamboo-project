@@ -53,7 +53,7 @@ resource "aws_iam_policy" "iam_policy_for_lambda" {
           "iam:CreateRole",
           "iam:AttachRolePolicy",
           "iam:CreatePolicy",
-          "lambda:*
+          "lambda:*"
         ]
         Resource = "*"
         Effect   = "Allow"
