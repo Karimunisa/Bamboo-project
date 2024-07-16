@@ -9,7 +9,7 @@ provider "aws" {
 data "archive_file" "lambda_zip" {
   type        = "zip"
   source_file = "./lambda_handler.py"
-  output_path = "lambda_handler.zip"
+  output_path = "./lambda_handler.zip"
 }
 
 resource "aws_lambda_function" "test_lambda" {
