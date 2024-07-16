@@ -8,15 +8,15 @@ provider "aws" {
 
 data "archive_file" "lambda_zip" {
   type        = "zip"
-  source_file = "./lambda_handler.py"
-  output_path = "./lambda_handler.zip"
+  source_file = "./test_lambda"
+  output_path = "./test_lambda.zip"
 }
 
 resource "aws_lambda_function" "test_lambda" {
   filename         = data.archive_file.lambda_zip.output_path
   function_name    = "test_lambda"
   role             = aws_iam_role.iam_for_lambda_tf.arn
-  handler          = "lambda_handler.handler"
+  handler          = "lambda_function.lambda_handler"
   source_code_hash = data.archive_file.lambda_zip.output_base64sha256
   runtime          = "python3.10"
 }
