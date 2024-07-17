@@ -4,6 +4,7 @@ provider "aws" {
 
 resource "aws_s3_bucket" "example" {
   bucket = "bamboo-s3bucket-798"
+
   acl    = "private"
 
   tags = {
